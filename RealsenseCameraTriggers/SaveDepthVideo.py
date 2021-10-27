@@ -2,6 +2,7 @@ import pyrealsense2 as rs
 import time
 from datetime import datetime
 import keyboard
+from SendDepthPicturesToS3 import to_aws
 
 """
 This program records video when an object of a large enough size enters an area
@@ -16,7 +17,8 @@ xCord = 460*2#int(165*2)
 yCord = 350*2#int(185*2)
 
 def main():
-    while True:
+    count =0
+    while count<=3:
 
         #start the pipeline (camera)
         pipeline = rs.pipeline()
@@ -68,6 +70,8 @@ def main():
         
         #timeout prevents recording from going past 5 seconds
         timeout = time.time() + 5
+        
+        
         while True:  
             print("Recording")
             #Retrieve the first depth frame, if no frame is found, return an empty frame instance.
@@ -82,13 +86,16 @@ def main():
             #if cow has left
             if(dist_to_cow != 0 and dist_to_floor - dist_to_cow < 0.5):
                 break
+            break
             time.sleep(.25)
+            
         #unassigns all variables
         pipeline.stop()
         pipeline = None
         config = None
         print("Recording Stopped Reseting")
-
+    count+=1
 
 if __name__ == "__main__":
     main()
+    to_aws()
