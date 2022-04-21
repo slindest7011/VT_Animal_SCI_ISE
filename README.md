@@ -11,7 +11,7 @@ To Run this system follow the current guidelines:
         1 Enter the following in your command line python -m pip install -r requirements.txt
         2 Enter in your database credientials within the slots on the Dash.py on line 21 and cropByLineAngle.py on line 360
         3 Store the Data Within the FarmVisit7 Directory with each cow being stored within their folder. 
-        Following Directory Structure: 
+        Example Directory Structure: 
         FarmVisit7 
               Cow1 
                   123.bag
