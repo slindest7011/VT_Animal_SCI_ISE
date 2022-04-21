@@ -74,6 +74,7 @@ import pickle
 
 def cow_breed_classification(img)->bool: # in the form of an int
     # Change the image to a color matrix 
+    print(img)
     src = cv.imread(img)
     hsv = cv.cvtColor(src, cv.COLOR_BGR2HSV)
     data = pd.DataFrame(hsv[240,320,:])
@@ -84,10 +85,10 @@ def cow_breed_classification(img)->bool: # in the form of an int
 
     return bClassifier.predict(data.T)
 
+def cow_weight_estimation(df)->int:#weight
+    with open('Models/weight_estimation.pickle','rb') as f: 
+        weight_predicter =pickle.load(f)
+    return weight_predicter.predict(df)
 
-def cow_weight_estimation(df)->int:
-     with open('Models/weight_estimation.pickle', 'rb') as f:
-        weight_predicter = pickle.load(f)
 
-     return weight_predicter.predict(df)
 

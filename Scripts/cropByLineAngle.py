@@ -8,12 +8,18 @@ import pyrealsense2 as rs
 from numpy import ones,vstack
 from numpy.linalg import lstsq
 import math
-import pickle
-
+from cow_identifier import cow_breed_classification, cow_weight_estimation # This is the function used when estimating the weight
+from HeadTailRemoval import HeadChopper
+from math import pi
+from datetime import date
 from sympy import true
+import mysql.connector
+from statistics import median
+
+
 
 def getHeight(depthBag, x, y):
-    emptyScale = r"C:\Users\indes\PycharmProjects\VT_Animal_SCI_ISE\RealsenseCameraTriggers\FarmVisit7\FarmVisit7\cow#_15_FarmVisit6_pic_9__7372.bag"
+    emptyScale = r"cow#_15_FarmVisit6_pic_9__7372.bag"
     config = rs.config()
     config.enable_device_from_file(depthBag)
     config2 = rs.config()
@@ -56,6 +62,7 @@ def getCowDim(Depth):
     h, s, v = hsvImage[:, :, 0], hsvImage[:, :, 1], hsvImage[:, :, 2]
     #creates a threshold using hue value
     (thresh, BW3) = cv2.threshold(h, 35, 255, cv2.THRESH_BINARY)
+    #head_remove = HeadChopper(BW3)  Replace BW3 with head_remove for automatic
     #cv2.imshow('H_Black and white', BW3)
     # Remove stuructures connected to the image border------------------------------------------------
     # find contours in the image and initialize the mask that will be
@@ -304,15 +311,18 @@ def main():
 
     #dataframe to hold cow width,length,breed,height
 
-    df = pd.DataFrame(columns=['width','length','height','breed', 'weight', 'accepted','fileLoc'],dtype = object)
+    df = pd.DataFrame(columns=['width','breed','area','volume','count'],dtype = object)
     
     #folder to read from
-    inputFolder = r"C:\Users\indes\PycharmProjects\VT_Animal_SCI_ISE\RealsenseCameraTriggers\FarmVisit7\FarmVisit7"
+    inputFolder = r"FarmVisit7"
     
+    count = 0
+    Final_Database_Output = []
     #loops through all folders
     for filename in os.listdir(inputFolder):
         #loops throguh images
         print(filename)
+        count+=1
         for picture in os.listdir(inputFolder  + '\\' + filename):
             print(filename)
             if(('.png' in picture) & ('Color' not in picture)):
@@ -323,16 +333,46 @@ def main():
                 pictureName = picture.split('.bag')[0] + '.bag'
                 height = getHeight("".join([inputFolder,'\\', filename, '\\',pictureName]), heightCord[0], heightCord[1])
                 #Breed
-                if ('T' in filename):
-                    breed = 'Jersey'
-                else:
-                    breed = 'Holstein'
-                #Append to dataFrame
-                df.loc[len(df)] = [cowValues[0], cowValues[1], height, breed, int(filename[:-1]), accept, filename +'\\'  +  picture]
-                print(df)
-        df.to_csv('Sample_text22.csv')
+ 
 
-# Hear instead of saving the model you can import Cow weight estimation from cow_identifier.py and use the data from their instead of making a full dataset
+                # Calculate are and volume here
+                area = pi*cowValues[0]*cowValues[1]/4
+                volume = pi*cowValues[0]*cowValues[1]*height/4
+                #Append to dataFrame
+                # df.loc[ len(df)]will change to [width, breed area and volume]
+            elif ('Color' in picture) and ('.txt' not in picture):
+                breed = cow_breed_classification(inputFolder +'\\'+ filename +'\\'+picture)[0]
+                
+            else: pass
+            try:
+                df.loc[len(df)] = [cowValues[0],breed,area,volume,count]
+                print(df)
+            except UnboundLocalError:
+                pass
+    
+        
+        cow_weight = cow_weight_estimation(df[['width','breed','area','volume']])
+        
+        Final_Database_Output.append((str(count),str(date.today()),str(median(cow_weight)),str(breed),count))
+        print(Final_Database_Output)
+
+    
+    connection = mysql.connector.connect(host='db-weight-estimation.cc02jmpcbera.us-east-1.rds.amazonaws.com',
+                                         database='weight_estimation',
+                                         user='admin',
+                                         password='weight-estimation-master-password')
+    sql = 'INSERT INTO weight (cow_id, cow_timestamp, cow_weight, breed, cow_number) VALUES (%s, %s,%s,%s,%s)'  
+    mycursor = connection.cursor()
+
+    mycursor.executemany(sql, Final_Database_Output)
+    print(Final_Database_Output)
+
+    
+    connection.commit()
+
+        # Change name if you do not want to overwrite previous data
+# can send to weight_estimation.pickle
+
 
 
 #counters used for threshold result naming
@@ -341,3 +381,27 @@ def main():
     
 if __name__ == "__main__":
     main()
+
+'''
+Input: A folder nested in other folders example: FarmVisit7
+Output: currently is a csv file named Sample_Text22
+
+Changes: There are three major changes that can be made to the script 
+
+1.) Add breed identification. Currently there is a script named cow_identifier.py. This contains a function
+input: (non depth)picture of cow
+output: Binary 0 is holstein, jersey is 1
+
+2) Put in the weight estimation model. 
+    input of: [width, breed, area, volume]
+    area = pi*length*width/4
+    volume = pi*length*width*depth/4
+
+3) Automated Head and tail removal
+
+Farm Visit7 -> cropbyLineAngle[(cow_identifier input), (manually find lengths and widths), (calculating area and volume)]-> 
+[width, breed, area, volume]-> weight_estimation -> database -> DashBoard
+
+** Need empty scale
+
+'''
