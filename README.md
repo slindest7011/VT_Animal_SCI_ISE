@@ -22,8 +22,10 @@ To Run this system follow the current guidelines:
                   123.png
                   123.txt
              
-        4 Run the cropByAngle.py script. This will prompt a window to select either an angle picture or a horizontal picture. To select an angled image press 2 
-          for the horizontal image press any other key. After this you can size the images length or width. This is done by using the arrow keys and the shift                 button. to make a dimension smaller use the shift key and the corressponing arrows, to make them larger, do not use the shift key. Size the image to crop           the head, neck and tail from each image.
+        4 Run the cropByAngle.py script. This will prompt a window to select either an angle picture or a horizontal picture. To select an angled image press 2 for         the horizontal image press any other key. 
+        After this you can size the images length or width. This is done by using the arrow keys and the shift button. 
+        To make a dimension smaller use the shift key and the corressponing arrows, to make them larger, do not use the shift key.
+        Size the image to crop the head, neck and tail from each image.
           
         5 After Finishing the running through the cropyByLineAngle.py script. Run the Dash.py script. After this script runs, go to your favorite web browser and                 search 127.0.0.1:8050. There you should see your dashboard with the data you just uploaded.
            
