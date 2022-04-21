@@ -357,10 +357,10 @@ def main():
         print(Final_Database_Output)
 
     
-    connection = mysql.connector.connect(host='db-weight-estimation.cc02jmpcbera.us-east-1.rds.amazonaws.com',
-                                         database='weight_estimation',
-                                         user='admin',
-                                         password='weight-estimation-master-password')
+    connection = mysql.connector.connect(host='',
+                                         database='',
+                                         user='',
+                                         password='')
     sql = 'INSERT INTO weight (cow_id, cow_timestamp, cow_weight, breed, cow_number) VALUES (%s, %s,%s,%s,%s)'  
     mycursor = connection.cursor()
 
