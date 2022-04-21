@@ -8,6 +8,7 @@ import pyrealsense2 as rs
 from numpy import ones,vstack
 from numpy.linalg import lstsq
 import math
+import pickle
 
 from sympy import true
 
@@ -331,7 +332,7 @@ def main():
                 print(df)
         df.to_csv('Sample_text22.csv')
 
-
+# Hear instead of saving the model you can import Cow weight estimation from cow_identifier.py and use the data from their instead of making a full dataset
 
 
 #counters used for threshold result naming

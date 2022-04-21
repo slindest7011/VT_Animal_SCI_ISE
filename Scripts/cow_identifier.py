@@ -85,5 +85,9 @@ def cow_breed_classification(img)->bool: # in the form of an int
     return bClassifier.predict(data.T)
 
 
+def cow_weight_estimation(df)->int:
+     with open('Models/weight_estimation.pickle', 'rb') as f:
+        weight_predicter = pickle.load(f)
 
+     return weight_predicter.predict(df)
 
