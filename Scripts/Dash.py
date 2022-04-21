@@ -18,10 +18,10 @@ import numpy as np
 
 # Connect to the database
 try:
-    connection = mysql.connector.connect(host='db-weight-estimation.cc02jmpcbera.us-east-1.rds.amazonaws.com',
-                                         database='weight_estimation',
-                                         user='admin',
-                                         password='weight-estimation-master-password')
+    connection = mysql.connector.connect(host='',
+                                         database='',
+                                         user='',
+                                         password='')
     if connection.is_connected():
         db_Info = connection.get_server_info()
         print("Connected to MySQL Server version ", db_Info)
