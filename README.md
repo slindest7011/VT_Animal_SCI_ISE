@@ -6,7 +6,9 @@
 This Weight Estimation System is made up of two major scripts, the cropByLineAngle.py and Dash.py. 
 
 To Run this system follow the current guidelines: 
-        1  enter the following in your command line python -m pip install -r requirements.txt
+
+
+        1 Enter the following in your command line python -m pip install -r requirements.txt
         2 Enter in your database credientials within the slots on the Dash.py on line 21 and cropByLineAngle.py on line 360
         3 Store the Data Within the FarmVisit7 Directory with each cow being stored within their folder. 
         Following Directory Structure: 
