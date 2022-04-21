@@ -16,9 +16,11 @@ To Run this system follow the current guidelines:
               Cow1 
                   123.bag
                   123.png
+                  123.txt
               Cow2
                   123.bag
                   123.png
+                  123.txt
              
         4 Run the cropByAngle.py script. This will prompt a window to select either an angle picture or a horizontal picture. To select an angled image press 2 
           for the horizontal image press any other key. After this you can size the images length or width. This is down by using the arrow keys and the shift button.           to make a dimension smaller use the shift key and the corressponing arrows, to make them larger, do not use the shift key. Size the image to crop the head, 
