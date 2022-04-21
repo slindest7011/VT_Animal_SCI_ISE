@@ -1,5 +1,0 @@
-Stream: Depth
-Frame Counter: -8070450532247928832
-Frame Timestamp: 1297036695111094253
-Sensor Timestamp: -6917529027641081856
-Auto Exposure: 0
