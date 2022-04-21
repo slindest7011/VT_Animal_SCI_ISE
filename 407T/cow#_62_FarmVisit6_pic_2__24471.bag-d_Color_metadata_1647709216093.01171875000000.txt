@@ -1,0 +1,5 @@
+Stream: Color
+Frame Counter: 6917529027641081856
+Sensor Timestamp: -6917529027641081856
+Gain Level: -1152921504606846976
+Auto Exposure: 0
