@@ -18,8 +18,8 @@ import sensor_msgs.msg
 
 
 def to_aws(number_or_image):
-    ACCESS_KEY = 'AKIAYCZUHUEJ3LABHAV5'
-    SECRET_KEY = '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'
+    ACCESS_KEY = ''
+    SECRET_KEY = ''
 
     def upload_to_aws(local_file, bucket, ACCESS_KEY, SECRET_KEY):
         s3 = boto3.client('s3',aws_access_key_id = ACCESS_KEY,aws_secret_access_key= SECRET_KEY)
